@@ -1,10 +1,10 @@
 # Reference: http://www.isi.edu/nsnam/ns/tutorial/nsscript5.html
 #  Project Specifications
 set val(node_count)  	101		
-set val(sim_time)	50	
+set val(sim_time)	100
 #128 bits
 set val(packet_size)	16		
-set val(repeatTx)	10	
+set val(repeatTx)	10
 set val(interval)	.02
 set val(X)		50
 set val(Y)		50
@@ -13,19 +13,18 @@ set val(file_trace)     "smalipat_pa3.tr"
 set val(file_stats)     "smalipat_pa3.stats"
 
 # Node Properties
-set val(channel)        Channel/WirelessChannel
+set val(channel)           Channel/WirelessChannel
 set val(prop)          	Propagation/TwoRayGround 
 set val(ant)            Antenna/OmniAntenna
 set val(ll)             LL
 set val(ifq)            Queue/DropTail/PriQueue
-set val(ifqlen)         5000
+set val(ifqlen)         50
 set val(netif)          Phy/WirelessPhy
 set val(mac)            Mac/randomMac
 #set val(mac)            Mac/802_11
-set val(rp)             DumbAgent
+set val(rp)             DSDV
 set val(nn)             $val(node_count)
-set val(fullduplex)     1
-$val(mac) set fullduplex_mode_ $val(fullduplex)
+
 $val(mac) set repeatTx $val(repeatTx)
 $val(mac) set interval $val(interval)
 
@@ -44,7 +43,7 @@ $topology load_flatgrid $val(X) $val(Y)
 create-god $val(nn)
 
 # Since all the nodes in the system are equivalent with same properties except the sink, define node-config for all nodes with same base class 
-$ns node-config -adhocRouting $val(rp) -llType $val(ll) -macType $val(mac) -ifqType $val(ifq) -ifqLen $val(ifqlen) -antType $val(ant) -propType $val(prop) -phyType $val(netif) -channelType $val(channel) -topoInstance $topology -agentTrace ON -routerTrace OFF -macTrace ON -movementTrace OFF
+$ns node-config -adhocRouting $val(rp) -llType $val(ll) -macType $val(mac) -ifqType $val(ifq) -ifqLen $val(ifqlen) -antType $val(ant) -propType $val(prop) -phyType $val(netif) -channelType $val(channel) -topoInstance $topology -agentTrace ON -routerTrace ON -macTrace ON -movementTrace OFF
 
 # We need to place all the nodes randomly on the grid. For this we define a random variable using random number generator class
 set rand [new RNG]
